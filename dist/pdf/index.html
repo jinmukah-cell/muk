@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="PDF 파일을 업로드하지 않고 브라우저에서 글자 수를 세는 도구">
+  <title>PDF 글자 수 세기</title>
+
+  <style>
+    :root{--ink:#122117;--muted:#68736b;--paper:#f6f3e9;--card:#fffdf7;--line:#d7d7ca;--green:#176b46;--lime:#dafa5d;--red:#b94a37;--shadow:0 22px 60px rgba(38,54,42,.13)}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:ui-rounded,"Pretendard","Apple SD Gothic Neo",system-ui,sans-serif;min-height:100vh}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 12% 0%,rgba(218,250,93,.28),transparent 32%),radial-gradient(circle at 92% 90%,rgba(23,107,70,.10),transparent 34%)}
+    main{width:min(1040px,calc(100% - 32px));margin:auto;padding:28px 0 64px;position:relative}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:70px}.brand{font-weight:900;letter-spacing:-.04em;font-size:18px}.privacy{display:flex;gap:8px;align-items:center;color:var(--green);font-size:13px;font-weight:800;background:#e7f0e9;border-radius:999px;padding:8px 12px}.privacy i{width:8px;height:8px;background:#34a36b;border-radius:50%;box-shadow:0 0 0 4px rgba(52,163,107,.13)}
+    .hero{text-align:center;max-width:760px;margin:0 auto 36px}.eyebrow{font:700 12px ui-monospace,monospace;text-transform:uppercase;letter-spacing:.14em;color:var(--green)}h1{font-size:clamp(40px,7vw,72px);line-height:1.02;letter-spacing:-.07em;margin:16px 0 20px}.hero p{font-size:18px;color:var(--muted);line-height:1.65;margin:auto;max-width:570px}
+    .panel{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:14px;box-shadow:var(--shadow)}.drop{position:relative;border:2px dashed #b9bdae;border-radius:20px;min-height:260px;display:grid;place-items:center;text-align:center;padding:36px;transition:.2s;background:rgba(255,255,255,.35)}.drop.drag{background:#f3fbd3;border-color:var(--green);transform:scale(.995)}.drop input{position:absolute;inset:0;opacity:0;cursor:pointer}.icon{width:64px;height:74px;margin:auto auto 18px;border:2px solid var(--ink);border-radius:8px;display:grid;place-items:center;font-size:23px;font-weight:900;position:relative;background:var(--lime);transform:rotate(-3deg)}.icon:after{content:"PDF";font:900 11px ui-monospace,monospace;position:absolute;bottom:8px}.drop h2{font-size:22px;margin:0 0 8px}.drop p{color:var(--muted);margin:0;font-size:14px}.choose{display:inline-block;margin-top:20px;background:var(--ink);color:white;border-radius:12px;padding:12px 18px;font-weight:800;font-size:14px}
+    .status{display:none;padding:18px 20px;align-items:center;gap:14px}.status.show{display:flex}.spinner{width:20px;height:20px;border:2px solid #c5ccc6;border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.bar{height:6px;border-radius:99px;background:#e4e7df;margin-top:7px;overflow:hidden}.bar i{display:block;width:0;height:100%;background:var(--green);transition:width .2s}.statusText{flex:1;font-size:14px;color:var(--muted)}
+    .results{display:none;margin-top:20px}.results.show{display:block}.fileline{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:4px 4px 18px}.filename{font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.reset{border:0;background:transparent;text-decoration:underline;cursor:pointer;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.metric{border:1px solid var(--line);border-radius:18px;padding:22px;background:#fff}.metric strong{font-size:clamp(27px,4vw,42px);display:block;letter-spacing:-.05em}.metric span{font-size:13px;color:var(--muted)}.metric.primary{background:var(--lime);border-color:#bfd942}.note{display:flex;gap:10px;align-items:flex-start;margin-top:18px;padding:16px;border-radius:14px;background:#edf5ef;color:#31523d;font-size:13px;line-height:1.55}.error{display:none;color:var(--red);background:#fff0ed;padding:14px 16px;border-radius:12px;margin-top:12px;font-size:14px}.error.show{display:block}
+    footer{text-align:center;color:#858c86;font-size:12px;margin-top:32px;line-height:1.6}@media(max-width:700px){.top{margin-bottom:48px}.grid{grid-template-columns:1fr 1fr}.drop{min-height:240px;padding:26px 18px}.privacy span{display:none}}@media(max-width:430px){main{width:min(100% - 20px,1040px)}.panel{padding:8px;border-radius:21px}.grid{grid-template-columns:1fr}.metric{display:flex;justify-content:space-between;align-items:baseline}.metric strong{order:2}.metric span{order:1}}
+  </style>
+</head>
+<body>
+<nav aria-label="도구함 메뉴" style="display:flex;flex-wrap:wrap;gap:16px;padding:18px 24px;background:#fffdf7;border-bottom:1px solid #d7d7ca;font:600 14px system-ui;color:#173e2c"><a href="../index.html#/" style="color:inherit">← 임진묵의 도구함</a><a href="../index.html#/writing" style="color:inherit">글쓰기</a><a href="../selah/index.html" style="color:inherit">오늘의 말씀</a><a href="../pdf/index.html" style="color:inherit">PDF 글자 수</a></nav>
+  <main>
+    <header class="top"><div class="brand">한글자</div><div class="privacy"><i></i><span>100% 브라우저 로컬 처리</span></div></header>
+    <section class="hero"><div class="eyebrow">Private PDF Character Counter</div><h1>PDF 속 글자,<br>여기서 바로 세어요.</h1><p>파일은 내 컴퓨터의 브라우저 안에서만 열립니다. 서버로 업로드하지 않고, 분석 결과도 저장하지 않아요.</p></section>
+    <section class="panel" aria-label="PDF 분석 도구">
+      <div class="drop" id="drop"><input id="file" type="file" accept="application/pdf,.pdf" aria-label="PDF 파일 선택"><div><div class="icon" aria-hidden="true">↓</div><h2>PDF를 이곳에 놓으세요</h2><p>또는 파일 선택 버튼을 눌러 불러오세요</p><span class="choose">PDF 파일 선택</span></div></div>
+      <div class="status" id="status"><div class="spinner"></div><div class="statusText"><strong id="statusLabel">PDF를 읽는 중…</strong><div class="bar"><i id="progress"></i></div></div></div>
+      <div class="error" id="error" role="alert"></div>
+      <div class="results" id="results">
+        <div class="fileline"><div class="filename" id="filename"></div><button class="reset" id="reset">다른 파일 분석</button></div>
+        <div class="grid"><div class="metric primary"><strong id="chars">0</strong><span>전체 글자 수</span></div><div class="metric"><strong id="charsNoSpace">0</strong><span>공백 제외</span></div><div class="metric"><strong id="words">0</strong><span>단어 수</span></div><div class="metric"><strong id="pages">0</strong><span>페이지 수</span></div></div>
+        <div class="note"><span>🔒</span><span><strong>개인정보 보호:</strong> 선택한 PDF와 추출된 텍스트는 이 브라우저 탭의 메모리에서만 처리됩니다. 탭을 닫거나 다른 파일을 선택하면 결과가 사라집니다.</span></div>
+      </div>
+    </section>
+    <footer>텍스트가 이미지로 스캔된 PDF는 OCR을 사용하지 않으므로 글자가 집계되지 않을 수 있습니다.<br>암호로 잠긴 PDF는 분석할 수 없습니다.</footer>
+  </main>
+
+  <script type="module">
+    let library;
+    async function loadLibrary(){
+      library ??= import('./vendor/pdf.min.mjs').then(lib=>{lib.GlobalWorkerOptions.workerSrc=new URL('./vendor/pdf.worker.min.mjs',location.href).href;return lib;}).catch(e=>{library=null;throw e;});
+      return library;
+    }
+    const $=id=>document.getElementById(id), input=$('file'), drop=$('drop'), status=$('status'), results=$('results'), error=$('error');
+    let busy=false;
+    const fmt=n=>new Intl.NumberFormat('ko-KR').format(n);
+    function clear(){results.classList.remove('show');error.classList.remove('show');status.classList.remove('show');input.value='';}
+    async function analyze(file){
+      if(busy||!file)return;
+      clear(); if(!file||(!file.type.includes('pdf')&&!file.name.toLowerCase().endsWith('.pdf'))){showError('PDF 파일만 선택할 수 있어요.');return}
+      busy=true; input.disabled=true; let task;
+      status.classList.add('show'); $('statusLabel').textContent='PDF를 여는 중…'; $('progress').style.width='5%';
+      try{
+        const pdfjsLib=await loadLibrary();
+        const bytes=new Uint8Array(await file.arrayBuffer());
+        task=pdfjsLib.getDocument({data:bytes,isEvalSupported:false,verbosity:0,cMapUrl:'./vendor/cmaps/',cMapPacked:true,standardFontDataUrl:'./vendor/standard_fonts/'});
+        const pdf=await task.promise; let text='';
+        for(let i=1;i<=pdf.numPages;i++){
+          $('statusLabel').textContent=`${i} / ${pdf.numPages} 페이지 읽는 중…`; $('progress').style.width=`${Math.round(i/pdf.numPages*100)}%`;
+          const page=await pdf.getPage(i), content=await page.getTextContent();
+          const pageText=content.items.map(item=>item.str+(item.hasEOL?'\n':'')).join(''); text+=(text?'\n':'')+pageText;
+          await new Promise(requestAnimationFrame);
+        }
+        const normalized=text.replace(/\r\n?/g,'\n');
+        $('filename').textContent=file.name; $('chars').textContent=fmt(Array.from(normalized).length); $('charsNoSpace').textContent=fmt(Array.from(normalized.replace(/\s/g,'')).length); $('words').textContent=fmt((normalized.trim().match(/\S+/g)||[]).length); $('pages').textContent=fmt(pdf.numPages);
+        status.classList.remove('show'); results.classList.add('show');
+      }catch(e){showError(e?.name==='PasswordException'?'암호로 잠긴 PDF는 분석할 수 없어요.':'PDF를 읽지 못했어요. 파일이 손상되지 않았는지 확인해 주세요.');}
+      finally{try{await task?.destroy();}catch{}busy=false;input.disabled=false;}
+    }
+    function showError(msg){status.classList.remove('show');error.textContent=msg;error.classList.add('show')}
+    input.addEventListener('change',e=>analyze(e.target.files[0]));
+    ['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('drag')}));
+    ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('drag')}));
+    drop.addEventListener('drop',e=>analyze(e.dataTransfer.files[0])); $('reset').addEventListener('click',clear);
+  </script>
+</body></html>

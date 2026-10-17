@@ -1,0 +1,32 @@
+# Local configuration and credentials
+.openai/
+.codex/
+.agents/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+service-account*.json
+
+# Personal writing, diary databases and exports
+diary-db*.json
+일기 기록/
+소리 녹음/
+*.pdf
+*.docx
+*.hwpx
+*.zip
+*.tar.gz
+*.log
+
+# Development artifacts
+node_modules/
+coverage/
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

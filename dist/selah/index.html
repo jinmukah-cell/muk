@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f4efe5" />
+  <meta name="description" content="마음을 고르고 말씀 앞에 잠시 머무는 개인 묵상 공간" />
+  <title>셀라 — 오늘의 말씀 묵상</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+<nav aria-label="도구함 메뉴" style="display:flex;flex-wrap:wrap;gap:16px;padding:18px 24px;background:#fffdf7;border-bottom:1px solid #d7d7ca;font:600 14px system-ui;color:#173e2c"><a href="../index.html#/" style="color:inherit">← 임진묵의 도구함</a><a href="../index.html#/writing" style="color:inherit">글쓰기</a><a href="../selah/index.html" style="color:inherit">오늘의 말씀</a><a href="../pdf/index.html" style="color:inherit">PDF 글자 수</a></nav>
+  <main class="shell">
+    <header class="hero">
+      <span class="eyebrow">DAILY CONTEMPLATION</span>
+      <h1>셀라<span aria-hidden="true">.</span></h1>
+      <p>잠시 멈추고, 오늘의 마음을 말씀 앞에 내려놓으세요.</p>
+    </header>
+
+    <section id="start" class="panel start-panel" aria-labelledby="start-title">
+      <div class="section-heading">
+        <span>01</span>
+        <div>
+          <p class="kicker">마음 살피기</p>
+          <h2 id="start-title">오늘은 어떤 마음으로 오셨나요?</h2>
+        </div>
+      </div>
+
+      <div class="themes" role="radiogroup" aria-label="묵상 주제">
+        <button class="theme active" type="button" data-theme="today" aria-pressed="true"><span>☀</span>오늘</button>
+        <button class="theme" type="button" data-theme="comfort" aria-pressed="false"><span>♧</span>위로</button>
+        <button class="theme" type="button" data-theme="rest" aria-pressed="false"><span>◌</span>쉼</button>
+        <button class="theme" type="button" data-theme="gratitude" aria-pressed="false"><span>✦</span>감사</button>
+        <button class="theme" type="button" data-theme="decision" aria-pressed="false"><span>◇</span>결정</button>
+        <button class="theme" type="button" data-theme="relationship" aria-pressed="false"><span>∞</span>관계</button>
+      </div>
+
+      <label class="note-label" for="heart-note">마음에 있는 말 <span>(선택)</span></label>
+      <textarea id="heart-note" rows="3" maxlength="180" placeholder="지금 느끼는 마음을 짧게 적어보세요."></textarea>
+      <p class="privacy-note">이 글은 브라우저 밖으로 전송되거나 저장되지 않습니다.</p>
+
+      <button id="meet-button" class="primary-button" type="button">
+        <span>오늘의 말씀 만나기</span><span aria-hidden="true">→</span>
+      </button>
+    </section>
+
+    <section id="result" class="panel result-panel" aria-live="polite" hidden>
+      <div class="section-heading">
+        <span>02</span>
+        <div>
+          <p class="kicker">오늘의 말씀</p>
+          <h2>말씀 앞에 머물기</h2>
+        </div>
+      </div>
+
+      <article class="verse-card">
+        <div class="sun-mark" aria-hidden="true"><span></span></div>
+        <p id="verse-text" class="verse-text"></p>
+        <p id="verse-reference" class="verse-reference"></p>
+      </article>
+
+      <div class="reflection-grid">
+        <article>
+          <p class="kicker">천천히 생각해 보기</p>
+          <p id="reflection"></p>
+        </article>
+        <article>
+          <p class="kicker">짧은 기도</p>
+          <p id="prayer"></p>
+        </article>
+      </div>
+
+      <div class="result-actions">
+        <button id="copy-button" class="secondary-button" type="button">말씀 복사</button>
+        <button id="again-button" class="text-button" type="button">다른 말씀 만나기</button>
+      </div>
+    </section>
+
+    <aside class="guide">
+      <p class="kicker">작은 묵상 안내</p>
+      <ol>
+        <li><span>1</span>한 번 천천히 읽습니다.</li>
+        <li><span>2</span>마음에 머무는 단어를 찾습니다.</li>
+        <li><span>3</span>오늘의 작은 실천을 떠올립니다.</li>
+      </ol>
+    </aside>
+
+    <footer>
+      <p>셀라 · 멈추어 마음을 기울이는 시간</p>
+      <p>구절 문구는 묵상을 돕는 짧은 인용이며, 전체 문맥은 사용 중인 성경에서 함께 읽어주세요.</p>
+    </footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js"></script>
+</body>
+</html>
